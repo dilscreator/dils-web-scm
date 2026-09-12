@@ -62,9 +62,14 @@ document.querySelector("[data-order-form]")?.addEventListener("submit", (event) 
   event.preventDefault();
   const form = new FormData(event.currentTarget);
   const game = document.querySelector("[data-modal-game]").textContent;
+  const orderDate = new Date();
+  const dateCode = orderDate.toISOString().slice(0, 10).replaceAll("-", "");
+  const randomCode = String(Math.floor(1000 + Math.random() * 9000));
+  const referenceId = `DILS-${dateCode}-${randomCode}`;
   const message = [
     "Halo Dils, saya ingin order top-up.",
     "",
+    `Ref ID: ${referenceId}`,
     `Game: ${game}`,
     `Detail Akun / ID: ${form.get("gameId")}`,
     `Nominal: ${form.get("amount")}`,
@@ -88,6 +93,13 @@ document.querySelector(".chat-form")?.addEventListener("submit", (event) => {
   input.value = "";
   messages.scrollTop = messages.scrollHeight;
 });
+
+document.querySelectorAll("[data-chat-prompt]").forEach((button) => button.addEventListener("click", () => {
+  const input = document.querySelector(".chat-form input");
+  if (!input) return;
+  input.value = button.dataset.chatPrompt || "";
+  input.focus();
+}));
 
 if ("IntersectionObserver" in window) {
   const observer = new IntersectionObserver((entries) => entries.forEach((entry) => { if (entry.isIntersecting) { entry.target.classList.add("is-visible"); observer.unobserve(entry.target); } }), { threshold: 0.12 });
