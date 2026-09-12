@@ -62,7 +62,17 @@ document.querySelector("[data-order-form]")?.addEventListener("submit", (event) 
   event.preventDefault();
   const form = new FormData(event.currentTarget);
   const game = document.querySelector("[data-modal-game]").textContent;
-  const message = `Halo Dils, saya ingin order ${game}.\nID: ${form.get("gameId")}\nNominal: ${form.get("amount")}\nCatatan: ${form.get("note") || "-"}`;
+  const message = [
+    "Halo Dils, saya ingin order top-up.",
+    "",
+    `Game: ${game}`,
+    `Detail Akun / ID: ${form.get("gameId")}`,
+    `Nominal: ${form.get("amount")}`,
+    "Metode Pembayaran: QRIS",
+    `Catatan: ${form.get("note") || "-"}`,
+    "",
+    "Mohon konfirmasi total pembayaran dan proses ordernya."
+  ].join("\n");
   window.open(whatsappUrl(message), "_blank", "noopener,noreferrer");
   modal.classList.remove("open");
   toast("Detail order sudah disiapkan di WhatsApp.");
